@@ -18,7 +18,7 @@ class Member(models.Model):
     phone_number = models.CharField(max_length=15)
     birthdate = models.DateField(null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-    whatsapp_number = models.CharField(max_length=15, null=True, blank=True)
+   
     location_type = models.CharField(
         max_length=10,
         choices=[('village', 'Village'), ('town', 'Town')],

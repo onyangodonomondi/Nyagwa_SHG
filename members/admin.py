@@ -135,7 +135,7 @@ class ContributionAdmin(admin.ModelAdmin):
 # 8. Admin configuration for Member model
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('surname', 'first_name', 'last_name', 'phone_number', 'email', 'whatsapp_number', 'location_type', 'town_name', 'date_of_registration')
+    list_display = ('surname', 'first_name', 'last_name', 'phone_number', 'email',  'location_type', 'town_name', 'date_of_registration')
     ordering = ('surname', 'first_name', 'last_name')
     search_fields = ('surname', 'first_name', 'last_name')
     list_filter = ('surname',)
