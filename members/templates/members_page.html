@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Members List{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-5">Members List</h1>
+<div class="container">
+    <div class="row justify-content-center">
+        {% for member in members %}
+        <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
+            <div class="card shadow-lg border-0 w-100 member-card">
+                <div class="card-body">
+                    <h5 class="card-title font-weight-bold text-center">{{ member.surname }} {{ member.first_name }} {{ member.last_name }}</h5>
+                    <p class="card-text"><strong>Phone:</strong> {{ member.phone_number }}</p>
+                    <p class="card-text"><strong>Email:</strong> {{ member.email }}</p>
+                    <p class="card-text"><strong>Age:</strong> {{ member.age }}</p>
+                    <p class="card-text"><strong>Status:</strong> 
+                        <span class="badge {% if member.status == 'Super Member' %}bg-success{% elif member.status == 'Active Member' %}bg-info{% else %}bg-secondary{% endif %}">
+                            {{ member.status }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -52,10 +52,10 @@ def export_members_to_csv(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="members.csv"'
     writer = csv.writer(response)
-    writer.writerow(['Surname', 'First Name', 'Last Name', 'Phone Number', 'Email', 'WhatsApp Number', 'Location Type', 'Town Name', 'Date of Registration'])
+    writer.writerow(['Surname', 'First Name', 'Last Name', 'Phone Number', 'Email', 'WhatsApp Number', 'Location Type', 'Town Name'])
 
     for member in queryset:
-        writer.writerow([member.surname, member.first_name, member.last_name, member.phone_number, member.email, member.whatsapp_number, member.location_type, member.town_name, member.date_of_registration])
+        writer.writerow([member.surname, member.first_name, member.last_name, member.phone_number, member.email, member.whatsapp_number, member.location_type, member.town_name])
 
     return response
 
@@ -96,8 +96,7 @@ def upload_members_csv(modeladmin, request, queryset):
                     email=row['email'],
                     whatsapp_number=row['whatsapp_number'],
                     location_type=row['location_type'],
-                    town_name=row['town_name'],
-                    date_of_registration=row['date_of_registration']
+                    town_name=row['town_name']
                 )
             except Exception as e:
                 messages.error(request, f"Error adding member {row['surname']}: {e}")
@@ -135,7 +134,7 @@ class ContributionAdmin(admin.ModelAdmin):
 # 8. Admin configuration for Member model
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('surname', 'first_name', 'last_name', 'phone_number', 'email',  'location_type', 'town_name', 'date_of_registration')
+    list_display = ('surname', 'first_name', 'last_name', 'phone_number', 'email', 'location_type', 'town_name', 'age')
     ordering = ('surname', 'first_name', 'last_name')
     search_fields = ('surname', 'first_name', 'last_name')
     list_filter = ('surname',)

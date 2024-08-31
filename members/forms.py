@@ -1,6 +1,6 @@
 from django import forms
 from django import forms
-from .models import Member, Child
+from .models import Member
 
 class CSVUploadForm(forms.Form):
     csv_file = forms.FileField()
@@ -12,7 +12,3 @@ class MemberForm(forms.ModelForm):
         # Exclude the non-editable field
         exclude = ['date_of_registration', 'status']
 
-class ChildForm(forms.ModelForm):
-    class Meta:
-        model = Child
-        fields = ['name', 'age', 'email', 'location_type']

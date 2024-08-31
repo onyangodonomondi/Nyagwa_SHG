@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date
+from django.core.exceptions import ValidationError
 
 # Define KENYA_TOWNS as a list of tuples
 KENYA_TOWNS = [
@@ -18,16 +19,22 @@ class Member(models.Model):
     phone_number = models.CharField(max_length=15)
     birthdate = models.DateField(null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-   
     location_type = models.CharField(
         max_length=10,
         choices=[('village', 'Village'), ('town', 'Town')],
-        default='village'
+        default='Unknown'
     )
     town_name = models.CharField(max_length=100, choices=KENYA_TOWNS, null=True, blank=True)
     has_children = models.BooleanField(null=True, blank=True)
     number_of_children = models.PositiveIntegerField(null=True, blank=True)
-    date_of_registration = models.DateField(default=date.today, editable=False)
+    date_of_registration = models.DateField(default=date.today, editable=False, null=True)
+
+    def clean(self):
+        # Enforce that town_name is only required if location_type is 'town'
+        if self.location_type == 'town' and not self.town_name:
+            raise ValidationError('Town name is required if location type is "town".')
+        elif self.location_type != 'town':
+            self.town_name = ''  # Clear the town_name if location_type is not 'town'
 
     @property
     def age(self):
@@ -39,32 +46,6 @@ class Member(models.Model):
     def __str__(self):
         return f"{self.surname}, {self.first_name} {self.last_name}"
 
-class Child(models.Model):
-    member = models.ForeignKey(Member, related_name='children', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    age = models.PositiveIntegerField()
-    email = models.EmailField(null=True, blank=True)
-    whatsapp_number = models.CharField(max_length=15, null=True, blank=True)
-    location_type = models.CharField(
-        max_length=10,
-        choices=[('village', 'Village'), ('town', 'Town')],
-        default='village'
-    )
-    town_name = models.CharField(
-        max_length=100,
-        choices=KENYA_TOWNS,
-        null=True,
-        blank=True
-    )
-    is_member = models.BooleanField(default=False)
-
-    def save(self, *args, **kwargs):
-        if self.age > 25:
-            self.is_member = True
-        super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.name
 
 class Event(models.Model):
     name = models.CharField(max_length=200)
@@ -106,6 +87,7 @@ class Contribution(models.Model):
             return 'Fully Contributed'
         elif 0 < self.amount < self.event.required_amount:
             return 'Partially Contributed'
+        
         else:
             return 'No Contribution'
 
