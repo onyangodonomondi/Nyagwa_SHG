@@ -37,3 +37,7 @@ def member_contribution_chart(request):
         chart_data.append(member_data)
     
     return render(request, 'members/contribution_chart.html', {'chart_data': chart_data, 'events': [event.name for event in events]})
+
+def home(request):
+    members = Member.objects.all()
+    return render(request, 'home.html', {'members': members})
