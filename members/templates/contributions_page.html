@@ -21,14 +21,7 @@
                 <td>{{ contribution.event.name }}</td>
                 <td>{{ contribution.amount }} Ksh</td>
                 <td>
-                    <span class="badge 
-                        {% if contribution.category == 'Fully Contributed' %}
-                            bg-success
-                        {% elif contribution.category == 'Partially Contributed' %}
-                            bg-warning
-                        {% else %}
-                            bg-secondary
-                        {% endif %}">
+                    <span class="badge {% if contribution.category == 'Fully Contributed' %}bg-success{% elif contribution.category == 'Partially Contributed' %}bg-warning{% else %}bg-secondary{% endif %}">
                         {{ contribution.category }}
                     </span>
                 </td>
