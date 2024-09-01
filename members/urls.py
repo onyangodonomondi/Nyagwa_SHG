@@ -11,6 +11,8 @@ urlpatterns = [
     # Adding the members URL pattern
     path('members/', views.members_page, name='members'),
     path('contributions/', views.contributions_page, name='contributions'),
+    path('export/pdf/', views.export_contributions_pdf, name='export_contributions_pdf'),
+    path('export/excel/', views.export_contributions_excel, name='export_contributions_excel'),
 
     # Add other URL patterns as needed
 ]

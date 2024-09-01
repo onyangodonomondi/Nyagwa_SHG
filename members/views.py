@@ -2,6 +2,11 @@ from django.shortcuts import render, redirect
 from .forms import MemberForm
 from .models import Member, Event, Contribution
 from django.db.models import Sum
+import io
+from django.http import FileResponse, HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import xlsxwriter
 
 def register_member(request):
     if request.method == 'POST':
@@ -62,9 +67,73 @@ def events_page(request):
 def members_page(request):
     members = Member.objects.all()
     return render(request, 'members_page.html', {'members': members})
-from django.shortcuts import render
-from .models import Contribution
 
 def contributions_page(request):
-    contributions = Contribution.objects.all()
-    return render(request, 'contributions_page.html', {'contributions': contributions})
+    selected_event = request.GET.get('event')
+    events = Event.objects.all()
+    if selected_event:
+        contributions = Contribution.objects.filter(event__name=selected_event)
+    else:
+        contributions = Contribution.objects.all()
+    
+    context = {
+        'contributions': contributions,
+        'events': events,
+        'selected_event': selected_event,
+    }
+    return render(request, 'contributions_page.html', context)
+
+def export_contributions_pdf(request):
+    selected_event = request.GET.get('event')
+    if selected_event:
+        contributions = Contribution.objects.filter(event__name=selected_event)
+    else:
+        contributions = Contribution.objects.all()
+
+    # Create a PDF document
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    p.drawString(100, 750, "Contributions Report")
+
+    y = 720
+    for contribution in contributions:
+        p.drawString(100, y, f"{contribution.member.surname} {contribution.member.first_name} - {contribution.event.name} - {contribution.amount} Ksh - {contribution.category}")
+        y -= 20
+    
+    p.showPage()
+    p.save()
+
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='contributions.pdf')
+
+def export_contributions_excel(request):
+    selected_event = request.GET.get('event')
+    if selected_event:
+        contributions = Contribution.objects.filter(event__name=selected_event)
+    else:
+        contributions = Contribution.objects.all()
+
+    # Create an Excel document
+    output = io.BytesIO()
+    workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+    worksheet = workbook.add_worksheet()
+
+    # Write data headers
+    worksheet.write(0, 0, 'Member Name')
+    worksheet.write(0, 1, 'Event')
+    worksheet.write(0, 2, 'Amount')
+    worksheet.write(0, 3, 'Status')
+
+    # Write data
+    for row_num, contribution in enumerate(contributions, 1):
+        worksheet.write(row_num, 0, f"{contribution.member.surname} {contribution.member.first_name}")
+        worksheet.write(row_num, 1, contribution.event.name)
+        worksheet.write(row_num, 2, f"{contribution.amount} Ksh")
+        worksheet.write(row_num, 3, contribution.category)
+
+    workbook.close()
+
+    output.seek(0)
+    response = HttpResponse(output, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=contributions.xlsx'
+    return response

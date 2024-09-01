@@ -278,3 +278,40 @@ html {
     font-size: 1.2rem;
     margin-top: 10px;
 }
+
+.table th,
+.table td {
+    text-align: left;
+    /* Align text to the left */
+    vertical-align: middle;
+    /* Center content vertically */
+    padding: 15px;
+    white-space: nowrap;
+}
+
+.card-body,
+.feature-box,
+.stat-box {
+    text-align: left;
+    /* Align text to the left */
+}
+
+/* If you want to align the entire container to the left */
+.container {
+    max-width: 1200px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: left;
+    /* Align text to the left */
+}
+
+.form-inline {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: auto;
+    display: inline-block;
+}
