@@ -1,90 +1,34 @@
-{% extends 'base.html' %}
-{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body style="background-color: #f6f8fa; font-family: Arial, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+    <div style="width: 400px; padding: 20px; background-color: white; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); border-radius: 8px;">
+        <h2 style="text-align: center; color: #333; font-size: 24px; margin-bottom: 20px;">Sign Up</h2>
+        <form method="POST" action="" style="display: flex; flex-direction: column;">
+            {% csrf_token %}
+            <label for="username" style="margin-bottom: 5px; color: #555;">Username:</label>
+            <input type="text" id="username" name="username" style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
 
-{% block title %}Sign Up{% endblock %}
+            <label for="password1" style="margin-bottom: 5px; color: #555;">Password:</label>
+            <input type="password" id="password1" name="password1" style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
 
-{% block content %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-10">
-            <div class="card">
-                <div class="card-header text-center">
-                    <h3>Sign Up</h3>
-                </div>
-                <div class="card-body">
-                    <form method="POST">
-                        {% csrf_token %}
-                        
-                        <div class="form-group">
-                            {{ form.username.label_tag }}
-                            {{ form.username|add_class:"form-control" }}
-                        </div>
+            <label for="password2" style="margin-bottom: 5px; color: #555;">Password confirmation:</label>
+            <input type="password" id="password2" name="password2" style="padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px;">
 
-                        <div class="form-group">
-                            {{ form.surname.label_tag }}
-                            {{ form.surname|add_class:"form-control" }}
-                        </div>
+            <label for="email" style="margin-bottom: 5px; color: #555;">Email:</label>
+            <input type="email" id="email" name="email" style="padding: 10px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px;">
 
-                        <div class="form-group">
-                            {{ form.first_name.label_tag }}
-                            {{ form.first_name|add_class:"form-control" }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.last_name.label_tag }}
-                            {{ form.last_name|add_class:"form-control" }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.password1.label_tag }}
-                            {{ form.password1|add_class:"form-control" }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.password2.label_tag }}
-                            {{ form.password2|add_class:"form-control" }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.phone_number.label_tag }}
-                            {{ form.phone_number|add_class:"form-control" }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.birthdate.label_tag }}
-                            {{ form.birthdate|add_class:"form-control" }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.email.label_tag }}
-                            {{ form.email|add_class:"form-control" }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.location_type.label_tag }}
-                            {{ form.location_type|add_class:"form-control" }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.town_name.label_tag }}
-                            {{ form.town_name|add_class:"form-control" }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.has_children.label_tag }}
-                            {{ form.has_children|add_class:"form-control" }}
-                        </div>
-
-                        <div class="form-group">
-                            {{ form.number_of_children.label_tag }}
-                            {{ form.number_of_children|add_class:"form-control" }}
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Sign Up</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+            <button type="submit" style="padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+                Sign Up
+            </button>
+        </form>
+        <p style="text-align: center; margin-top: 15px; color: #555;">
+            Already have an account? <a href="{% url 'login' %}" style="color: #007bff;">Log in</a>
+        </p>
     </div>
-</div>
-{% endblock %}
+</body>
+</html>
