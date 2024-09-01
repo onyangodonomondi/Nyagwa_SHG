@@ -1,4 +1,6 @@
 {% load static %}
+{% load widget_tweaks %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,11 +35,31 @@
                             <a class="nav-link" href="{% url 'events_page' %}">Events</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'contributions' %}">Contributions</a>
+                            <a class="nav-link" href="{% url 'contributions_page' %}">Contributions</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
                         </li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <!-- Logout form -->
+                            <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: none;">
+                                {% csrf_token %}
+                                <button type="submit">Logout</button>
+                            </form>
+                            <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

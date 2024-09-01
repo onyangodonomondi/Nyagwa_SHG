@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+<style>
+    .profile-section {
+        background: #f8f9fa;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 50px;
+    }
+
+    .profile-section h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #343a40;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #495057;
+    }
+
+    .form-control {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="profile-section">
+                <h1 class="text-center">Update Your Profile</h1>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_phone_number">{{ p_form.phone_number.label }}</label>
+                        {{ p_form.phone_number }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_birthdate">{{ p_form.birthdate.label }}</label>
+                        {{ p_form.birthdate }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_email">{{ p_form.email.label }}</label>
+                        {{ p_form.email }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_location_type">{{ p_form.location_type.label }}</label>
+                        {{ p_form.location_type }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_town_name">{{ p_form.town_name.label }}</label>
+                        {{ p_form.town_name }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_has_children">{{ p_form.has_children.label }}</label>
+                        {{ p_form.has_children }}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_number_of_children">{{ p_form.number_of_children.label }}</label>
+                        {{ p_form.number_of_children }}
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 100px auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+    }
+
+    .login-container h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #343a40;
+    }
+
+    .form-control {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 12px;
+        font-size: 1.1rem;
+        border-radius: 5px;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        font-size: 1.1rem;
+        color: #495057;
+    }
+
+    .forgot-password {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .forgot-password a {
+        color: #007bff;
+    }
+
+    .forgot-password a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+</style>
+
+<div class="login-container">
+    <h1>Login</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_username">Username:</label>
+            <input type="text" name="username" id="id_username" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="id_password">Password:</label>
+            <input type="password" name="password" id="id_password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <div class="forgot-password">
+        <a href="{% url 'password_reset' %}">Forgot your password?</a>
+    </div>
+</div>
+{% endblock %}

@@ -37,26 +37,36 @@
     background-image: url("{% static 'images/background.jpg' %}");
     background-size: cover;
     background-position: center;
-
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin: 0;
+    /* Remove any margin */
+    padding: 0;
+    position: relative;
     /* Ensure it doesn't overlap other elements */
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Ensure full coverage */
+    background: rgba(0, 0, 0, 0.5);
+    /* Dark overlay */
+    z-index: 1;
 }
 
 .hero-section .container {
     max-width: 100%;
     padding: 0;
     position: relative;
-
-}
-
-.hero-section::before {
-    content: "";
-
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(228, 228, 228, 0.5);
-    z-index: 1;
+    z-index: 2;
 }
 
 .hero-section h1 {
@@ -65,10 +75,9 @@
     margin-bottom: 20px;
 }
 
-
 .hero-section p.lead {
     font-size: 1.5rem;
-    margin-bottom: 0px;
+    margin-bottom: 30px;
 }
 
 .hero-section .btn-primary {
@@ -82,11 +91,13 @@
     border-radius: 15px;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     background-color: #f8f9fa;
+    margin-bottom: 15px;
+    /* Add some space between cards */
 }
 
 .card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 30px rgba(255, 255, 255, 0.952);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
 }
 
 .card-title {
@@ -97,27 +108,8 @@
 
 .card-text {
     color: #6c757d;
-}
-
-.badge {
-    font-size: 0.9rem;
-    padding: 0.5em 1em;
-    border-radius: 10px;
-    color: white;
-    display: inline-block;
-    margin-top: 10px;
-}
-
-.bg-success {
-    background-color: #28a745;
-}
-
-.bg-info {
-    background-color: #17a2b8;
-}
-
-.bg-secondary {
-    background-color: #6c757d;
+    text-align: center;
+    /* Center align text inside the cards */
 }
 
 /* General Container and Heading Styles */
@@ -143,6 +135,24 @@ h1 {
 
     h1 {
         font-size: 1.5rem;
+    }
+
+    .hero-section {
+        height: 50vh;
+        /* Adjust height for smaller screens */
+    }
+
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-section p.lead {
+        font-size: 1.2rem;
+    }
+
+    .hero-section .btn-primary {
+        font-size: 1rem;
+        padding: 10px 20px;
     }
 }
 
@@ -183,17 +193,21 @@ h1 {
     .table tr {
         display: block;
         margin-bottom: 10px;
+        border: 1px solid #ddd;
+        /* Add border for clarity */
+        border-radius: 10px;
+        padding: 10px;
     }
 
     .table td {
         display: block;
-        text-align: right;
+        text-align: left;
         font-size: 14px;
         border-bottom: 1px solid #ddd;
         position: relative;
-        padding-left: 50%;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-left: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
 
     .table td:before {
@@ -201,10 +215,13 @@ h1 {
         position: absolute;
         left: 0;
         width: 50%;
-        padding-left: 15px;
         font-weight: bold;
         text-align: left;
         background-color: #f8f9fa;
+    }
+
+    .table td:last-child {
+        border-bottom: none;
     }
 
     .badge {
@@ -256,11 +273,13 @@ html {
 .features-section .feature-box h4 {
     font-size: 1.75rem;
     margin-bottom: 15px;
+    text-align: center;
 }
 
 .features-section .feature-box p {
     font-size: 1.1rem;
     color: #6c757d;
+    text-align: center;
 }
 
 /* Stats Section */
@@ -272,37 +291,13 @@ html {
 .stat-box h2 {
     font-size: 3rem;
     font-weight: bold;
+    text-align: center;
 }
 
 .stat-box p {
     font-size: 1.2rem;
     margin-top: 10px;
-}
-
-.table th,
-.table td {
-    text-align: left;
-    /* Align text to the left */
-    vertical-align: middle;
-    /* Center content vertically */
-    padding: 15px;
-    white-space: nowrap;
-}
-
-.card-body,
-.feature-box,
-.stat-box {
-    text-align: left;
-    /* Align text to the left */
-}
-
-/* If you want to align the entire container to the left */
-.container {
-    max-width: 1200px;
-    padding-left: 15px;
-    padding-right: 15px;
-    text-align: left;
-    /* Align text to the left */
+    text-align: center;
 }
 
 .form-inline {
@@ -314,4 +309,49 @@ html {
 .form-control {
     width: auto;
     display: inline-block;
+}
+
+.card-header {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.form-floating {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    height: auto;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+}
+
+.form-control-lg {
+    font-size: 1.25rem;
+    /* Increase the font size */
+    padding: 0.875rem 1.25rem;
+    /* Increase padding */
+}
+
+.btn-block {
+    padding: 10px 20px;
+    font-size: 1.25rem;
+    border-radius: 5px;
+}
+
+.d-grid {
+    display: flex;
+    justify-content: center;
 }

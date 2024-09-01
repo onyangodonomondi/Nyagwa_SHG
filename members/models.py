@@ -1,8 +1,8 @@
 from django.db import models
 from datetime import date
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
 
-# Define KENYA_TOWNS as a list of tuples
 KENYA_TOWNS = [
     ('Nairobi', 'Nairobi'),
     ('Mombasa', 'Mombasa'),
@@ -11,6 +11,27 @@ KENYA_TOWNS = [
     ('Eldoret', 'Eldoret'),
     # Add more towns as needed
 ]
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    phone_number = models.CharField(max_length=15, blank=True)
+    birthdate = models.DateField(null=True, blank=True)
+    email = models.EmailField(blank=True)
+    location_type = models.CharField(max_length=50, blank=True, choices=[('Village', 'Village'), ('Town', 'Town')])
+    town_name = models.CharField(max_length=100, blank=True, choices=KENYA_TOWNS)
+    has_children = models.BooleanField(default=False)
+    number_of_children = models.PositiveIntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+    @property
+    def age(self):
+        if self.birthdate:
+            today = date.today()
+            return today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
+        return None
 
 class Member(models.Model):
     surname = models.CharField(max_length=100)
@@ -24,29 +45,21 @@ class Member(models.Model):
         choices=[('village', 'Village'), ('town', 'Town')],
         default='Unknown'
     )
-    town_name = models.CharField(max_length=100, choices=KENYA_TOWNS, null=True, blank=True)
+    town_name = models.CharField(max_length=100, null=True, blank=True)
     has_children = models.BooleanField(null=True, blank=True)
     number_of_children = models.PositiveIntegerField(null=True, blank=True)
     date_of_registration = models.DateField(default=date.today, editable=False, null=True)
 
-    def clean(self):
-        # Enforce that town_name is only required if location_type is 'town'
-        if self.location_type == 'town' and not self.town_name:
-            raise ValidationError('Town name is required if location type is "town".')
-        elif self.location_type != 'town':
-            self.town_name = ''  # Clear the town_name if location_type is not 'town'
-
-    @property
     def age(self):
         if self.birthdate:
             today = date.today()
             return today.year - self.birthdate.year - ((today.month, today.day) < (self.birthdate.month, self.birthdate.day))
         return None
 
+    age.short_description = 'Age'  # This gives a name to the column in the admin
+
     def __str__(self):
         return f"{self.surname}, {self.first_name} {self.last_name}"
-
-
 class Event(models.Model):
     name = models.CharField(max_length=200)
     date = models.DateField()
@@ -66,7 +79,6 @@ class Contribution(models.Model):
 
     def update_member_status(self):
         contributions = self.member.contributions.filter(event__date__gte=self.member.date_of_registration)
-
         if contributions.exists():
             total_contributed = sum(contrib.amount for contrib in contributions)
             required_total = sum(contrib.event.required_amount for contrib in contributions)
@@ -87,13 +99,8 @@ class Contribution(models.Model):
             return 'Fully Contributed'
         elif 0 < self.amount < self.event.required_amount:
             return 'Partially Contributed'
-        
         else:
             return 'No Contribution'
-
-    @property
-    def required_amount(self):
-        return self.event.required_amount
 
     def __str__(self):
         return f"{self.member} - {self.event}: {self.amount} Ksh"
